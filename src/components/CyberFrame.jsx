@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Activity, Search, Timer } from 'lucide-react';
+import StatusBars from './StatusBars';
 
 const ChatMessage = ({ message, isUser }) => (
   <div className={`flex ${isUser ? 'justify-end' : 'justify-start'} mb-4`}>
@@ -100,7 +101,10 @@ const CyberFrame = () => {
     <div className="min-h-screen bg-black p-8">
       <div className="w-full h-[calc(100vh-4rem)] border border-cyan-400/30 bg-black">
         {/* Main content area */}
-        <div className="h-full grid grid-cols-2 gap-4 p-8 relative">
+        <div className="h-full grid grid-cols-[auto_1fr_1fr] gap-4 p-8 relative">
+          {/* Status Bars Section */}
+          <StatusBars />
+
           {/* Chat Section */}
           <div className="flex flex-col h-full relative overflow-hidden">
             <video
@@ -166,8 +170,9 @@ const CyberFrame = () => {
             </div>
           </div>
 
-          {/* Fading Line */}
-          <div className="absolute top-0 bottom-0 left-1/2 w-px bg-gradient-to-b from-transparent via-cyan-400 to-transparent"></div>
+          {/* Fading Lines */}
+          <div className="absolute top-0 bottom-0 left-[calc(264px+2rem)] w-px bg-gradient-to-b from-transparent via-cyan-400 to-transparent"></div>
+          <div className="absolute top-0 bottom-0 left-[calc(50%+132px)] w-px bg-gradient-to-b from-transparent via-cyan-400 to-transparent"></div>
         </div>
       </div>
     </div>
