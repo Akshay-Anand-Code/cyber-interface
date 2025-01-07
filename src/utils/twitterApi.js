@@ -20,7 +20,7 @@ function formatTweetTime(dateString) {
 
 export async function fetchUserTweets() {
   try {
-    const response = await fetch('http://localhost:3001/api/tweets');
+    const response = await fetch('https://cyber-interface.onrender.com/api/tweets');
 
     if (!response.ok) {
       if (response.status === 429) {
