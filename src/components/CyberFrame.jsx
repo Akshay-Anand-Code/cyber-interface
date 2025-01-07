@@ -169,7 +169,7 @@ const CyberFrame = () => {
               <div className="realtive inset-0 bg-cyan-400/20 mix-blend-overlay z-10"></div>
                 <video
                   className="w-full h-24 object-cover bg-cyan-400/20 "
-                  src="src/assets/signal.mp4"
+                  src="/signal.mp4"
                   autoPlay
                   loop
                   muted
