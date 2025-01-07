@@ -1,8 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Activity, Search, Timer } from 'lucide-react';
 import StatusBars from './StatusBars';
+import AiProtocolButton from './AiProtocolButton';
 import { fetchUserTweets } from '../utils/twitterApi';
+import { getChatResponse } from '../utils/openai';
 
+// Keeping all original components exactly as they are
 const ChatMessage = ({ message, isUser }) => (
   <div className={`flex ${isUser ? 'justify-end' : 'justify-start'} mb-4`}>
     <div className={`max-w-[80%] px-4 py-2 rounded bg-[#001a1a] border border-cyan-400/20`}>
@@ -26,9 +29,10 @@ const TweetCard = ({ tweet }) => (
 );
 
 const CyberFrame = () => {
+  // Keeping all the original state and effects
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState('');
-  const [timeLeft, setTimeLeft] = useState(600); // 10 minutes in seconds
+  const [timeLeft, setTimeLeft] = useState(600);
   const chatEndRef = useRef(null);
   const [tweets, setTweets] = useState([]);
 
@@ -40,7 +44,6 @@ const CyberFrame = () => {
     const timer = setInterval(() => {
       setTimeLeft(prev => (prev > 0 ? prev - 1 : 600));
     }, 1000);
-
     return () => clearInterval(timer);
   }, []);
 
@@ -51,11 +54,8 @@ const CyberFrame = () => {
         setTweets(fetchedTweets);
       }
     };
-
     getTweets();
-    // Fetch every 15 minutes
     const interval = setInterval(getTweets, 15 * 60 * 1000);
-
     return () => clearInterval(interval);
   }, []);
 
@@ -74,48 +74,25 @@ const CyberFrame = () => {
     setInputMessage('');
 
     try {
-      const response = await fetch('https://eliza-starter-07uw.onrender.com/ce5d1752-cd9c-0bc7-b5c8-119d95e47844/message', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          text: userMessage,
-          userId: "user",
-          userName: "User"
-        }),
-      });
-      
-      const data = await response.json();
-      console.log('Response data:', data); // Debug log
-
-      // The response is an array with a message object
-      if (Array.isArray(data) && data.length > 0) {
-        const botMessage = data[0]; // Get first message from array
-        setMessages(prev => [...prev, { 
-          text: botMessage.text,
-          isUser: false 
-        }]);
-      } else {
-        setMessages(prev => [...prev, { 
-          text: "No response received", 
-          isUser: false 
-        }]);
-      }
-    } catch (error) {
-      console.error('Error:', error);
+      const response = await getChatResponse(userMessage);
       setMessages(prev => [...prev, { 
-        text: "Connection error. Please try again.", 
+        text: response,
+        isUser: false 
+      }]);
+    } catch (error) {
+      console.error('Chat Error:', error);
+      setMessages(prev => [...prev, { 
+        text: "Neural connection error. Please try again.", 
         isUser: false 
       }]);
     }
   };
 
   return (
-    <div className="min-h-screen bg-black p-8">
-      <div className="w-full h-[calc(100vh-4rem)] border border-cyan-400/30 bg-black">
+    <div className="min-h-screen bg-black p-6">
+      <div className="w-full h-[calc(100vh-3rem)] border border-cyan-400/30 bg-black">
         {/* Main content area */}
-        <div className="h-full grid grid-cols-[auto_1fr_1fr] gap-4 p-8 relative">
+        <div className="h-full grid grid-cols-[auto_1fr_1fr] gap-4 p-6 relative">
           {/* Status Bars Section */}
           <StatusBars />
 
@@ -131,7 +108,7 @@ const CyberFrame = () => {
             <div className="flex items-center justify-between p-4 border-b border-cyan-400/20 relative z-10">
               <div className="flex items-center">
                 <Activity className="w-5 h-5 text-cyan-400 mr-2" />
-                <h2 className="text-cyan-400 text-lg font-normal">ELIZA Interface</h2>
+                <h2 className="text-cyan-400 text-lg font-normal">AETHER Interface</h2>
               </div>
               <div className="text-cyan-400 text-sm">
                 Contract: 0x1234...abcd
@@ -145,7 +122,7 @@ const CyberFrame = () => {
               <div ref={chatEndRef} />
             </div>
 
-            <form onSubmit={sendMessage} className="p-4 relative z-10">
+            <form onSubmit={sendMessage} className="p-4 pb-8 relative z-10">
               <div className="flex gap-4">
                 <input
                   type="text"
@@ -173,7 +150,8 @@ const CyberFrame = () => {
               </div>
               <div className="flex items-center">
                 <Timer className="w-4 h-4 text-cyan-400 animate-pulse mr-2" />
-                <span className="text-cyan-400 text-sm">{formatTime(timeLeft)}</span>
+                <span className="text-cyan-400 text-sm mr-4">{formatTime(timeLeft)}</span>
+                <AiProtocolButton />
               </div>
             </div>
             
@@ -187,11 +165,22 @@ const CyberFrame = () => {
                   Loading tweets...
                 </div>
               )}
+              <div className="mt-4">
+              <div className="realtive inset-0 bg-cyan-400/20 mix-blend-overlay z-10"></div>
+                <video
+                  className="w-full h-24 object-cover bg-cyan-400/20 "
+                  src="src/assets/signal.mp4"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                />
+              </div>
             </div>
           </div>
 
           {/* Fading Lines */}
-          <div className="absolute top-0 bottom-0 left-[calc(264px+2rem)] w-px bg-gradient-to-b from-transparent via-cyan-400 to-transparent"></div>
+          <div className="absolute top-0 bottom-0 left-[calc(264px+1.5rem)] w-px bg-gradient-to-b from-transparent via-cyan-400 to-transparent"></div>
           <div className="absolute top-0 bottom-0 left-[calc(50%+132px)] w-px bg-gradient-to-b from-transparent via-cyan-400 to-transparent"></div>
         </div>
       </div>
@@ -200,4 +189,3 @@ const CyberFrame = () => {
 };
 
 export default CyberFrame;
-//hello 
