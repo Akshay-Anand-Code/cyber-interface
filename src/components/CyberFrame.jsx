@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Activity, Search, Timer } from 'lucide-react';
 import StatusBars from './StatusBars';
+import { fetchUserTweets } from '../utils/twitterApi';
 
 const ChatMessage = ({ message, isUser }) => (
   <div className={`flex ${isUser ? 'justify-end' : 'justify-start'} mb-4`}>
@@ -13,11 +14,14 @@ const ChatMessage = ({ message, isUser }) => (
 const TweetCard = ({ tweet }) => (
   <div className="mb-6 bg-[#001a1a] rounded border border-cyan-400/20 p-4">
     <div className="flex justify-between items-center mb-2">
-      <span className="text-cyan-400">@{tweet.username}</span>
+      <span className="text-cyan-400">@YourTwitterHandle</span>
       <span className="text-cyan-400/50 text-sm">{tweet.time}</span>
     </div>
     <p className="text-white mb-2">{tweet.text}</p>
-    <p className="text-cyan-400/70 text-sm">Sentiment: {tweet.sentiment}</p>
+    <div className="flex gap-4 text-cyan-400/70 text-sm">
+      <span>♥ {tweet.metrics.like_count}</span>
+      <span>↺ {tweet.metrics.retweet_count}</span>
+    </div>
   </div>
 );
 
@@ -26,6 +30,7 @@ const CyberFrame = () => {
   const [inputMessage, setInputMessage] = useState('');
   const [timeLeft, setTimeLeft] = useState(600); // 10 minutes in seconds
   const chatEndRef = useRef(null);
+  const [tweets, setTweets] = useState([]);
 
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -37,6 +42,19 @@ const CyberFrame = () => {
     }, 1000);
 
     return () => clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
+    const getTweets = async () => {
+      const fetchedTweets = await fetchUserTweets();
+      setTweets(fetchedTweets);
+    };
+
+    getTweets();
+    // Refresh tweets every 5 minutes
+    const interval = setInterval(getTweets, 300000);
+
+    return () => clearInterval(interval);
   }, []);
 
   const formatTime = (seconds) => {
@@ -90,12 +108,6 @@ const CyberFrame = () => {
       }]);
     }
   };
-
-  const mockTweets = [
-    { id: 1, username: "tech_observer", text: "Quantum computing breakthrough in silicon-based qubits", time: "2m ago", sentiment: "Positive" },
-    { id: 2, username: "cyber_sentinel", text: "New cybersecurity protocols implemented across major networks", time: "5m ago", sentiment: "Neutral" },
-    { id: 3, username: "ai_future", text: "Neural networks showing unexpected emergence patterns", time: "8m ago", sentiment: "Analytical" },
-  ];
 
   return (
     <div className="min-h-screen bg-black p-8">
@@ -164,9 +176,15 @@ const CyberFrame = () => {
             </div>
             
             <div className="flex-1 overflow-y-auto p-4">
-              {mockTweets.map((tweet) => (
-                <TweetCard key={tweet.id} tweet={tweet} />
-              ))}
+              {tweets.length > 0 ? (
+                tweets.map((tweet) => (
+                  <TweetCard key={tweet.id} tweet={tweet} />
+                ))
+              ) : (
+                <div className="text-cyan-400/50 text-center py-4">
+                  Loading tweets...
+                </div>
+              )}
             </div>
           </div>
 
