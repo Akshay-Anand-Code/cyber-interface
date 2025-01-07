@@ -14,13 +14,13 @@ const ChatMessage = ({ message, isUser }) => (
 const TweetCard = ({ tweet }) => (
   <div className="mb-6 bg-[#001a1a] rounded border border-cyan-400/20 p-4">
     <div className="flex justify-between items-center mb-2">
-      <span className="text-cyan-400">@YourTwitterHandle</span>
+      <span className="text-cyan-400">@Astra_galactic</span>
       <span className="text-cyan-400/50 text-sm">{tweet.time}</span>
     </div>
     <p className="text-white mb-2">{tweet.text}</p>
     <div className="flex gap-4 text-cyan-400/70 text-sm">
-      <span>♥ {tweet.metrics.like_count}</span>
-      <span>↺ {tweet.metrics.retweet_count}</span>
+      <span>♥ {tweet.metrics?.like_count || 0}</span>
+      <span>↺ {tweet.metrics?.retweet_count || 0}</span>
     </div>
   </div>
 );
@@ -47,12 +47,14 @@ const CyberFrame = () => {
   useEffect(() => {
     const getTweets = async () => {
       const fetchedTweets = await fetchUserTweets();
-      setTweets(fetchedTweets);
+      if (fetchedTweets.length > 0) {
+        setTweets(fetchedTweets);
+      }
     };
 
     getTweets();
-    // Refresh tweets every 5 minutes
-    const interval = setInterval(getTweets, 300000);
+    // Fetch every 15 minutes
+    const interval = setInterval(getTweets, 15 * 60 * 1000);
 
     return () => clearInterval(interval);
   }, []);
