@@ -39,7 +39,7 @@ const AiProtocolButton = () => {
               <p className="text-cyan-400/70 leading-relaxed">
                 Create and share your own AI. Customize its instructions, goals, and
                 personality, and watch it change based on how others interact with
-                it. Earn $GWIRE with every interaction your AI has.
+                it. Earn $AETHER with every interaction your AI has.
               </p>
 
               {/* Status Section */}

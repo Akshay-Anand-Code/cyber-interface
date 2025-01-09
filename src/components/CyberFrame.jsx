@@ -28,6 +28,44 @@ const TweetCard = ({ tweet }) => (
   </div>
 );
 
+const ContractAddress = () => {
+  const [copied, setCopied] = useState(false);
+  const fullAddress = "FWhSkPkWsQHDSX6sQayBxU2yRS8jRGiVAauSnJsdpump";
+  const truncatedAddress = `${fullAddress.slice(0, 6)}...${fullAddress.slice(-6)}`;
+
+  const copyToClipboard = () => {
+    // Use the Clipboard API
+    navigator.clipboard.writeText(fullAddress)
+      .then(() => {
+        setCopied(true);
+        // Reset the "Copied!" message after 2 seconds
+        setTimeout(() => setCopied(false), 2000);
+      })
+      .catch((err) => {
+        console.error('Failed to copy:', err);
+      });
+  };
+
+  return (
+    <div className="relative">
+      <div 
+        onClick={copyToClipboard}
+        className="text-cyan-400 text-sm cursor-pointer hover:text-cyan-300 transition-colors"
+        title="Click to copy full address"
+      >
+        Contract: {truncatedAddress}
+      </div>
+      
+      {/* Copied notification */}
+      {copied && (
+        <div className="absolute -top-8 right-0 bg-[#001a1a] border border-cyan-400/20 px-2 py-1 rounded text-cyan-400 text-xs">
+          Copied!
+        </div>
+      )}
+    </div>
+  );
+};
+
 const CyberFrame = () => {
   // Keeping all the original state and effects
   const [messages, setMessages] = useState([]);
@@ -107,12 +145,14 @@ const CyberFrame = () => {
             />
             <div className="flex items-center justify-between p-4 border-b border-cyan-400/20 relative z-10">
               <div className="flex items-center">
-                <Activity className="w-5 h-5 text-cyan-400 mr-2" />
-                <h2 className="text-cyan-400 text-lg font-normal">AETHER Interface</h2>
+                <img 
+                  src="/aether.png" 
+                  alt="Aether" 
+                  className="w-6 h-6 mr-2"
+                />
+                <span className="text-cyan-400 text-lg">AETHER Interface</span>
               </div>
-              <div className="text-cyan-400 text-sm">
-                Contract: 0x1234...abcd
-              </div>
+              <ContractAddress />
             </div>
             
             <div className="flex-1 overflow-y-auto p-4 relative z-10">
