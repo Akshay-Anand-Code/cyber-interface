@@ -17,7 +17,7 @@ const ChatMessage = ({ message, isUser }) => (
 const TweetCard = ({ tweet }) => (
   <div className="mb-6 bg-[#001a1a] rounded border border-cyan-400/20 p-4">
     <div className="flex justify-between items-center mb-2">
-      <span className="text-cyan-400">@Astra_galactic</span>
+      <span className="text-cyan-400">@Aether_OnSol</span>
       <span className="text-cyan-400/50 text-sm">{tweet.time}</span>
     </div>
     <p className="text-white mb-2">{tweet.text}</p>
