@@ -56,13 +56,13 @@ const StatusBars = () => {
             dexscreener
           </a>
           <a 
-            href="https://telegram.org" 
+            href="https://t.me/aetherAiportal" 
             className="text-cyan-400 hover:text-cyan-300 transition-colors text-center"
           >
             telegram
           </a>
           <a 
-            href="https://twitter.com" 
+            href="https://x.com/AetherOnSol" 
             className="text-cyan-400 hover:text-cyan-300 transition-colors text-center"
           >
             x/twitter
