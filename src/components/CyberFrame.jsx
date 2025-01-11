@@ -195,20 +195,24 @@ const CyberFrame = () => {
               </div>
             </div>
             
-            <div className="flex-1 overflow-y-auto p-4">
-              {tweets.length > 0 ? (
-                tweets.map((tweet) => (
+            <div className="flex flex-col h-full justify-between">
+              {/* Tweets container with fixed height */}
+              <div className="p-4 h-[calc(100%-6rem)]">
+                {tweets.slice(0, 2).map((tweet) => (
                   <TweetCard key={tweet.id} tweet={tweet} />
-                ))
-              ) : (
-                <div className="text-cyan-400/50 text-center py-4">
-                  Loading tweets...
-                </div>
-              )}
-              <div className="mt-4">
-              <div className="realtive inset-0 bg-cyan-400/20 mix-blend-overlay z-10"></div>
+                ))}
+                {tweets.length === 0 && (
+                  <div className="text-cyan-400/50 text-center py-4">
+                    Loading tweets...
+                  </div>
+                )}
+              </div>
+              
+              {/* Signal video fixed at bottom */}
+              <div className="h-24">
+                <div className="relative inset-0 bg-cyan-400/20 mix-blend-overlay z-10"></div>
                 <video
-                  className="w-full h-24 object-cover bg-cyan-400/20 "
+                  className="w-full h-24 object-cover bg-cyan-400/20"
                   src="/signal.mp4"
                   autoPlay
                   loop

@@ -90,7 +90,7 @@ async function fetchTwitterTweets() {
     console.log('Attempting to fetch tweets...');
     const params = new URLSearchParams({
       'tweet.fields': 'created_at,public_metrics',
-      'max_results': '10',
+      'max_results': '2',
       'exclude': 'retweets,replies'
     });
 
@@ -123,7 +123,7 @@ async function fetchTwitterTweets() {
 
     if (data.data && data.data.length > 0) {
       const transformedData = {
-        data: data.data.slice(0, 3).map(tweet => ({
+        data: data.data.slice(0, 2).map(tweet => ({
           id: tweet.id,
           text: tweet.text,
           created_at: tweet.created_at,
