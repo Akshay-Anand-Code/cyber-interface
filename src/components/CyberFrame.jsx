@@ -30,7 +30,7 @@ const TweetCard = ({ tweet }) => (
 
 const ContractAddress = () => {
   const [copied, setCopied] = useState(false);
-  const fullAddress = "Coming soon";
+  const fullAddress = "E9cgRJzHne28duGPk6nj46FJ6hyvPGmuKmCUj7bwpump";
   const truncatedAddress = `${fullAddress.slice(0, 6)}...${fullAddress.slice(-6)}`;
 
   const copyToClipboard = () => {
