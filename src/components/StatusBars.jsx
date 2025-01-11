@@ -44,13 +44,13 @@ const StatusBars = () => {
       <div className="p-4 bg-[#001a1a] border border-cyan-400/20 rounded">
         <div className="grid grid-cols-2 gap-4">
           <a 
-            href="https://pump.fun" 
+            href="https://pump.fun/coin/E9cgRJzHne28duGPk6nj46FJ6hyvPGmuKmCUj7bwpump" 
             className="text-cyan-400 hover:text-cyan-300 transition-colors text-center"
           >
             pump.fun
           </a>
           <a 
-            href="https://dexscreener.com" 
+            href="https://pump.fun/coin/E9cgRJzHne28duGPk6nj46FJ6hyvPGmuKmCUj7bwpump" 
             className="text-cyan-400 hover:text-cyan-300 transition-colors text-center"
           >
             dexscreener
